@@ -59,7 +59,7 @@ export default {
   },
   mounted() {
     if (!this.menu) {
-      Axios.get("/dicts/list.json")
+      Axios.get(`${document.baseURI}dicts/list.json`)
         .then(response => (this.menu = response.data))
         .catch(() => (this.menu = []));
     }

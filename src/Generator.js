@@ -14,7 +14,7 @@ export default class Generator {
     this.size = size;
     this.total = this.size.x * this.size.y;
     this.file = file;
-    this.dict = Axios.get(`/dicts/${this.file}.txt`).then(this.procDict);
+    this.dict = Axios.get(`${document.baseURI}dicts/${this.file}.txt`).then(this.procDict);
   }
 
   procDict(response) {
