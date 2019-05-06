@@ -2,5 +2,9 @@
   {
     "file": "en-noun-1000",
     "label": "1000 English Nouns"
+  },
+  {
+    "file": "en-spiritual",
+    "label": "Some Spiritual Words"
   }
 ]

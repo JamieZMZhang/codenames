@@ -1,20 +1,9 @@
 <template>
+  <LoadingModal v-if="!board" />
   <div
-    v-if="!board"
-    class="modal fade show"
+    v-else
+    class="h-100"
   >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-body text-center">
-          <div class="spinner-border spinner-border-sm">
-            <span class="sr-only">Loading...</span>
-          </div>
-          Loading......
-        </div>
-      </div>
-    </div>
-  </div>
-  <div v-else class="h-100">
     <nav class="navbar navbar-dark bg-dark fixed-top">
       <router-link
         to="/"
@@ -25,7 +14,9 @@
       <div
         class="btn btn-dark"
         @click="share"
-      >Share Game</div>
+      >
+        Share Game
+      </div>
     </nav>
     <div class="d-flex flex-column justify-content-center align-items-center h-100">
       <div
@@ -36,50 +27,44 @@
           v-for="(c,index) in (board.size.x * board.size.y)"
           :key="`code-${index}`"
           :class="['btn',{selected: board.selected[index]} ,COLORS[board.colors[index]]]"
-          @click="onSelect(index)"
+          @click="selectConfirm = index;"
         >{{board.words[index]}}</div>
       </div>
-      <div
+      <ShareModal
+        v-if="showShareModal"
+        @close="showShareModal=false"
+      />
+      <SelectConfirmModal
         v-if="selectConfirm"
-        class="modal fade show backdrop"
-      >
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content bg-light">
-            <div class="modal-header justify-content-center">
-              <h5 class="modal-title">Confirm</h5>
-            </div>
-            <div class="modal-body">
-              Choosing <span class="font-weight-bold text-capitalize">{{board.words[selectConfirm]}}</span>?
-            </div>
-            <div class="modal-footer">
-              <div
-                class="btn btn-secondary"
-                @click="onConfirm(true)"
-              >YES</div>
-              <div
-                class="btn btn-light"
-                @click="onConfirm(false)"
-              >NO</div>
-            </div>
-          </div>
-        </div>
-      </div>
+        :word="board.words[selectConfirm]"
+        @result="onConfirm"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import { COLORS } from "@/define";
+import ShareModal from "./ShareModal";
+import SelectConfirmModal from "./SelectConfirmModal";
+import LoadingModal from "./LoadingModal";
+
 const database = window.database;
 
 let dbRef = null;
 
 export default {
   name: "view-game",
+  components: {
+    ShareModal,
+    SelectConfirmModal,
+    LoadingModal
+  },
   data() {
     return {
       selectConfirm: null,
-      board: null
+      board: null,
+      showShareModal: false
     };
   },
   computed: {
@@ -111,11 +96,6 @@ export default {
     }
   },
   methods: {
-    onSelect(index) {
-      if (!this.owner) {
-        this.selectConfirm = index;
-      }
-    },
     share() {
       if ("share" in navigator) {
         navigator.share({
@@ -124,9 +104,7 @@ export default {
           url: window.location.href
         });
       } else {
-        alert(
-          "share feature not supported. Please copy and send the current url manually."
-        );
+        this.showShareModal = true;
       }
     },
     onConfirm(result) {
@@ -141,6 +119,7 @@ export default {
       }
       this.selectConfirm = null;
     },
+
     subscribeDb(room) {
       if (dbRef) {
         dbRef.off("value");

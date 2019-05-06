@@ -2,14 +2,15 @@
   "name": "Code Names",
   "short_name": "codenames",
   "start_url": "/codenames/",
+  "scope": "/codenames/",
   "icons": [
     {
-      "src": "/icons/icon128.png",
+      "src": "icons/icon128.png",
       "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "/icons/icon512.png",
+      "src": "icons/icon512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
