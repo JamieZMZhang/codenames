@@ -23,7 +23,7 @@ export default {
   },
   mounted() {
     const { file, size: sizeStr } = this.$route.params;
-    const xy = sizeStr.split("x");
+    const xy = sizeStr.split("x").map(v => parseInt(v, 10));
     const size = { x: xy[0], y: xy[1] };
     const gen = new Generator(size, file);
     gen.generateAsync().then(game => {

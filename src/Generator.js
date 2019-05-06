@@ -1,13 +1,11 @@
+import { COLORS } from '@/define';
 import Axios from 'axios';
 
 function getRnd(max, min = 0) {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-const mine = 0;
-const red = 1;
-const blue = 2;
-const nutral = 3;
+
 
 export default class Generator {
   constructor(size, file) {
@@ -18,7 +16,7 @@ export default class Generator {
   }
 
   procDict(response) {
-    return response.data.replace(/\r/, '').split('\n').filter(word => word);
+    return response.data.replace(/\r/g, '').split('\n').filter(word => word);
   }
 
   async generateAsync() {
@@ -27,7 +25,8 @@ export default class Generator {
     return btoa(JSON.stringify({
       colors,
       words,
-      size: this.size
+      size: this.size,
+      selected: Array(this.total).fill("0").join(""),
     }));
   }
 
@@ -37,24 +36,24 @@ export default class Generator {
     do {
       words.add(dict[getRnd(dict.length - 1)]);
     } while (words.size < this.total);
-    return [...words.values()].join(",");
+    return [...words.values()].map(v => v[0].toUpperCase() + v.substring(1)).join(",");
   }
 
   genAmounts() {
     const amounts = [];
-    amounts[mine] = 1;
-    amounts[nutral] = Math.floor(this.total / 3);
+    amounts[COLORS.mine] = 1;
+    amounts[COLORS.nutral] = Math.floor(this.total / 3);
     if (this.total % 3 === 1) {
-      amounts[nutral] -= 1;
+      amounts[COLORS.nutral] -= 1;
     }
-    const value = this.total - amounts[nutral];
+    const value = this.total - amounts[COLORS.nutral];
     const team = getRnd(1);
-    amounts[team ? red : blue] = value;
-    amounts[!team ? red : blue] = value - 1;
+    amounts[team ? COLORS.red : COLORS.blue] = value;
+    amounts[!team ? COLORS.red : COLORS.blue] = value - 1;
     return amounts;
   }
 
-  genColors() {
+  genColors() { // BUG: wrong color amounts
     const amounts = this.genAmounts();
     const colors = [];
     const tempA = [...amounts];
