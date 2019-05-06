@@ -20,11 +20,9 @@ export default class Generator {
   }
 
   async generateAsync() {
-    const colors = this.genColors();
-    const words = await this.genWordsAsync();
     return {
-      colors,
-      words,
+      colors: this.genColors(),
+      words: await this.genWordsAsync(),
       size: this.size,
       selected: Array(this.total).fill(false),
     };
@@ -64,6 +62,12 @@ export default class Generator {
         tempA[k] -= 1;
       }
     } while (colors.length < this.total);
+
+    // swap Mine because current way will make the Mine locate on the top very often
+    const newLoc = getRnd(this.total);
+    const oldLoc = colors.findIndex(v => v === COLORS.mine);
+    colors[oldLoc] = colors[newLoc];
+    colors[newLoc] = COLORS.mine;
     return colors;
   }
 }

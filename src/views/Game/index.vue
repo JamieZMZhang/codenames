@@ -35,7 +35,7 @@
         @close="showShareModal=false"
       />
       <SelectConfirmModal
-        v-if="selectConfirm"
+        v-if="selectConfirm !== null"
         :word="board.words[selectConfirm]"
         @result="onConfirm"
       />
