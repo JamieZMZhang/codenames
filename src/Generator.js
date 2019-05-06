@@ -22,12 +22,12 @@ export default class Generator {
   async generateAsync() {
     const colors = this.genColors();
     const words = await this.genWordsAsync();
-    return btoa(JSON.stringify({
+    return {
       colors,
       words,
       size: this.size,
-      selected: Array(this.total).fill("0").join(""),
-    }));
+      selected: Array(this.total).fill(false),
+    };
   }
 
   async genWordsAsync() {
@@ -36,7 +36,7 @@ export default class Generator {
     do {
       words.add(dict[getRnd(dict.length - 1)]);
     } while (words.size < this.total);
-    return [...words.values()].map(v => v[0].toUpperCase() + v.substring(1)).join(",");
+    return [...words.values()];
   }
 
   genAmounts() {
@@ -64,6 +64,6 @@ export default class Generator {
         tempA[k] -= 1;
       }
     } while (colors.length < this.total);
-    return colors.join("");
+    return colors;
   }
 }

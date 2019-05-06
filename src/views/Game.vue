@@ -1,28 +1,15 @@
 <template>
   <div
-    v-if="!mode"
+    v-if="!board"
     class="modal fade show"
   >
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content bg-light">
-        <div class="modal-header justify-content-center">
-          <h5 class="modal-title">Select Display Mode</h5>
-        </div>
-        <div class="modal-body container">
-          <div class="row">
-            <div class="col">
-              <div
-                class="btn btn-block btn-dark"
-                @click="mode='master'"
-              >Master</div>
-            </div>
-            <div class="col">
-              <div
-                class="btn btn-block btn-info"
-                @click="mode='spy'"
-              >Spy</div>
-            </div>
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <div class="spinner-border spinner-border-sm">
+            <span class="sr-only">Loading...</span>
           </div>
+          Loading......
         </div>
       </div>
     </div>
@@ -44,17 +31,15 @@
       >Share Game</div>
     </nav>
     <div
-      :class="['board p-3 rounded', mode]"
+      :class="['board p-3 rounded', roomType]"
       :style="boardStyle"
     >
-      <template v-for="y in height">
-        <div
-          v-for="x in width"
-          :key="`col-${x}-${y}`"
-          :class="['btn',{selected: selected[x - 1 + height * (y - 1)] === '1'} ,COLORS[board.colors[x - 1 + height * (y - 1)]]]"
-          @click="onSelect(x,y)"
-        >{{words[x - 1 + height * (y - 1)]}}</div>
-      </template>
+      <div
+        v-for="(c,index) in (board.size.x * board.size.y)"
+        :key="`code-${index}`"
+        :class="['btn',{selected: board.selected[index]} ,COLORS[board.colors[index]]]"
+        @click="onSelect(index)"
+      >{{board.words[index]}}</div>
     </div>
     <div
       v-if="selectConfirm"
@@ -66,7 +51,7 @@
             <h5 class="modal-title">Confirm</h5>
           </div>
           <div class="modal-body">
-            Choosing <span class="font-weight-bold">{{selectConfirm.word}}</span>
+            Choosing <span class="font-weight-bold">{{board.words[selectConfirm]}}</span>?
           </div>
           <div class="modal-footer">
             <div
@@ -86,78 +71,57 @@
 
 <script>
 import { COLORS } from "@/define";
+const database = window.database;
+
+let dbRef = null;
 
 export default {
   name: "view-game",
   data() {
     return {
-      mode: null,
-      selectConfirm: null
+      selectConfirm: null,
+      board: null
     };
   },
   computed: {
+    roomType() {
+      return this.$route.params.room === localStorage.clientId
+        ? "master"
+        : "spy";
+    },
+    room() {
+      return this.$route.params.room;
+    },
     COLORS() {
       return COLORS;
     },
-    board: {
-      get() {
-        return JSON.parse(atob(this.$route.params.game));
-      },
-      set(value) {
-        this.$router.replace(btoa(JSON.stringify(value)));
-      }
-    },
-    words() {
-      return this.board.words.split(",");
-    },
-    width() {
-      return this.board.size.x;
-    },
-    height() {
-      return this.board.size.y;
-    },
-    selected: {
-      get() {
-        return this.board.selected;
-      },
-      set(value) {
-        this.board = {
-          ...this.board,
-          selected: value
-        };
-      }
-    },
     boardStyle() {
+      if (!this.board) {
+        return {};
+      }
       return {
-        gridTemplateColumns: Array(this.width)
+        gridTemplateColumns: Array(this.board.size.x)
           .fill("1fr")
           .join(" ")
       };
     }
   },
+  watch: {
+    room(value) {
+      this.subscribeDb(value);
+    }
+  },
   methods: {
-    onSelect(x, y) {
-      const arr = this.selected.split("");
-      const target = x - 1 + this.height * (y - 1);
-
-      if (this.mode === "master") {
-        arr[target] = arr[target] === "0" ? "1" : "0";
-        this.selected = arr.join("");
-      } else {
-        this.selectConfirm = {
-          word: this.words[target],
-          onClick: () => {
-            arr[target] = "1";
-            this.selected = arr.join("");
-          }
-        };
+    onSelect(index) {
+      if (!this.owner) {
+        this.selectConfirm = index;
       }
     },
     share() {
       if ("share" in navigator) {
         navigator.share({
           title: "Code Names",
-          text: "Code Names Game",
+          text: "Code Names",
           url: window.location.href
         });
       } else {
@@ -168,10 +132,33 @@ export default {
     },
     onConfirm(result) {
       if (result) {
-        this.selectConfirm.onClick();
+        const arr = [...this.board.selected];
+        arr[this.selectConfirm] = true;
+        this.board = {
+          ...this.board,
+          selected: arr
+        };
+        database.ref(`clients/${this.$route.params.room}`).set(this.board);
       }
       this.selectConfirm = null;
+    },
+    subscribeDb(room) {
+      if (dbRef) {
+        dbRef.off("value");
+      }
+      if (room) {
+        dbRef = database.ref(`clients/${room}`);
+        dbRef.on("value", snapshot => {
+          this.board = snapshot.val();
+        });
+      }
     }
+  },
+  mounted() {
+    this.subscribeDb(this.room);
+  },
+  destroyed() {
+    this.subscribeDb(null);
   }
 };
 </script>

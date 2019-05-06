@@ -15,6 +15,7 @@
 
 <script>
 import Generator from "@/Generator";
+const database = window.database;
 
 export default {
   name: "view-generator",
@@ -27,7 +28,9 @@ export default {
     const size = { x: xy[0], y: xy[1] };
     const gen = new Generator(size, file);
     gen.generateAsync().then(game => {
-      this.$router.push(`/game/${game}`);
+      const clientId = localStorage.clientId;
+      database.ref(`clients/${clientId}`).set(game);
+      this.$router.push(`/game/${clientId}`);
     });
   }
 };
