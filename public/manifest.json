@@ -1,0 +1,21 @@
+{
+  "name": "Code Names",
+  "short_name": "codenames",
+  "start_url": "/codenames/",
+  "icons": [
+    {
+      "src": "/icons/icon128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#343a40",
+  "background_color": "#343a40",
+  "display": "fullscreen",
+  "orientation": "landscape"
+}

@@ -14,10 +14,7 @@
       </div>
     </div>
   </div>
-  <div
-    v-else
-    class="d-flex flex-column justify-content-center align-items-center fullscreen"
-  >
+  <div v-else class="h-100">
     <nav class="navbar navbar-dark bg-dark fixed-top">
       <router-link
         to="/"
@@ -30,38 +27,40 @@
         @click="share"
       >Share Game</div>
     </nav>
-    <div
-      :class="['board p-3 rounded', roomType]"
-      :style="boardStyle"
-    >
+    <div class="d-flex flex-column justify-content-center align-items-center h-100">
       <div
-        v-for="(c,index) in (board.size.x * board.size.y)"
-        :key="`code-${index}`"
-        :class="['btn',{selected: board.selected[index]} ,COLORS[board.colors[index]]]"
-        @click="onSelect(index)"
-      >{{board.words[index]}}</div>
-    </div>
-    <div
-      v-if="selectConfirm"
-      class="modal fade show backdrop"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-light">
-          <div class="modal-header justify-content-center">
-            <h5 class="modal-title">Confirm</h5>
-          </div>
-          <div class="modal-body">
-            Choosing <span class="font-weight-bold">{{board.words[selectConfirm]}}</span>?
-          </div>
-          <div class="modal-footer">
-            <div
-              class="btn btn-secondary"
-              @click="onConfirm(true)"
-            >YES</div>
-            <div
-              class="btn btn-light"
-              @click="onConfirm(false)"
-            >NO</div>
+        :class="['board p-3 rounded', roomType]"
+        :style="boardStyle"
+      >
+        <div
+          v-for="(c,index) in (board.size.x * board.size.y)"
+          :key="`code-${index}`"
+          :class="['btn',{selected: board.selected[index]} ,COLORS[board.colors[index]]]"
+          @click="onSelect(index)"
+        >{{board.words[index]}}</div>
+      </div>
+      <div
+        v-if="selectConfirm"
+        class="modal fade show backdrop"
+      >
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content bg-light">
+            <div class="modal-header justify-content-center">
+              <h5 class="modal-title">Confirm</h5>
+            </div>
+            <div class="modal-body">
+              Choosing <span class="font-weight-bold text-capitalize">{{board.words[selectConfirm]}}</span>?
+            </div>
+            <div class="modal-footer">
+              <div
+                class="btn btn-secondary"
+                @click="onConfirm(true)"
+              >YES</div>
+              <div
+                class="btn btn-light"
+                @click="onConfirm(false)"
+              >NO</div>
+            </div>
           </div>
         </div>
       </div>
@@ -181,11 +180,6 @@ export default {
   --color: black;
 }
 
-.fullscreen {
-  width: 100vw;
-  height: 100vh;
-}
-
 .board {
   display: grid;
   column-gap: 0.8em;
@@ -195,6 +189,7 @@ export default {
 
   .btn {
     font-weight: bold;
+    text-transform: capitalize;
   }
 
   &.spy .btn {
