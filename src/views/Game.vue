@@ -29,7 +29,7 @@
   </div>
   <div
     v-else
-    class="d-flex flex-column justify-content-center fullscreen"
+    class="d-flex flex-column justify-content-center align-items-center fullscreen"
   >
     <nav class="navbar navbar-dark bg-dark fixed-top">
       <router-link
@@ -56,6 +56,31 @@
         >{{words[x - 1 + height * (y - 1)]}}</div>
       </template>
     </div>
+    <div
+      v-if="selectConfirm"
+      class="modal fade show backdrop"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-light">
+          <div class="modal-header justify-content-center">
+            <h5 class="modal-title">Confirm</h5>
+          </div>
+          <div class="modal-body">
+            Choosing <span class="font-weight-bold">{{selectConfirm.word}}</span>
+          </div>
+          <div class="modal-footer">
+            <div
+              class="btn btn-secondary"
+              @click="onConfirm(true)"
+            >YES</div>
+            <div
+              class="btn btn-light"
+              @click="onConfirm(false)"
+            >NO</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -66,7 +91,8 @@ export default {
   name: "view-game",
   data() {
     return {
-      mode: null
+      mode: null,
+      selectConfirm: null
     };
   },
   computed: {
@@ -118,9 +144,13 @@ export default {
         arr[target] = arr[target] === "0" ? "1" : "0";
         this.selected = arr.join("");
       } else {
-        // TODO: show confirm modal
-        arr[target] = "1";
-        this.selected = arr.join("");
+        this.selectConfirm = {
+          word: this.words[target],
+          onClick: () => {
+            arr[target] = "1";
+            this.selected = arr.join("");
+          }
+        };
       }
     },
     share() {
@@ -135,6 +165,12 @@ export default {
           "share feature not supported. Please copy and send the current url manually."
         );
       }
+    },
+    onConfirm(result) {
+      if (result) {
+        this.selectConfirm.onClick();
+      }
+      this.selectConfirm = null;
     }
   }
 };
@@ -168,6 +204,7 @@ export default {
   column-gap: 0.8em;
   row-gap: 0.8em;
   background: #ffffff40;
+  max-width: var(--breakpoint-xl);
 
   .btn {
     font-weight: bold;
@@ -198,6 +235,10 @@ export default {
   .row + .row {
     margin-top: 10px;
   }
+}
+
+.backdrop {
+  background: #00000088;
 }
 </style>
 

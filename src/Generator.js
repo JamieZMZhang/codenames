@@ -46,14 +46,14 @@ export default class Generator {
     if (this.total % 3 === 1) {
       amounts[COLORS.nutral] -= 1;
     }
-    const value = this.total - amounts[COLORS.nutral];
+    const value = (this.total - amounts[COLORS.nutral]) / 2;
     const team = getRnd(1);
     amounts[team ? COLORS.red : COLORS.blue] = value;
     amounts[!team ? COLORS.red : COLORS.blue] = value - 1;
     return amounts;
   }
 
-  genColors() { // BUG: wrong color amounts
+  genColors() {
     const amounts = this.genAmounts();
     const colors = [];
     const tempA = [...amounts];
