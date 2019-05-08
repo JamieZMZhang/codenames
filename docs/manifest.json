@@ -1,22 +1,42 @@
 {
-  "name": "Code Names",
-  "short_name": "Code Names",
-  "start_url": "/codenames/",
-  "scope": "/codenames/",
-  "icons": [
-    {
-      "src": "icons/icon128.png",
-      "sizes": "128x128",
-      "type": "image/png"
-    },
-    {
-      "src": "icons/icon512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ],
-  "theme_color": "#343a40",
-  "background_color": "#343a40",
-  "display": "fullscreen",
-  "orientation": "landscape"
+	"name": "Code Names",
+	"short_name": "Code Names",
+	"start_url": "/codenames/",
+	"scope": "/codenames/",
+	"icons": [
+		{
+			"src": "icons/icon128.png",
+			"sizes": "128x128",
+			"type": "image/png"
+		},
+		{
+			"src": "icons/icon180.png",
+			"sizes": "180x180",
+			"type": "image/png"
+		},
+		{
+			"src": "icons/icon192.png",
+			"sizes": "192x192",
+			"type": "image/png"
+		},
+		{
+			"src": "icons/icon256.png",
+			"sizes": "256x256",
+			"type": "image/png"
+		},
+		{
+			"src": "icons/icon512.png",
+			"sizes": "512x512",
+			"type": "image/png"
+		},
+		{
+			"src": "icons/icon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml"
+		}
+	],
+	"theme_color": "#343a40",
+	"background_color": "#343a40",
+	"display": "fullscreen",
+	"orientation": "landscape"
 }
