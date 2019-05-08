@@ -20,11 +20,22 @@ export default class Generator {
   }
 
   async generateAsync() {
+    const tiles = [];
+    const colors = this.genColors();
+    const words = await this.genWordsAsync();
+
+    for (let i = 0; i < this.total; ++i) {
+      tiles.push([
+        colors[i],
+        words[i],
+        0
+      ]);
+    }
+
     return {
-      colors: this.genColors(),
-      words: await this.genWordsAsync(),
-      size: this.size,
-      selected: Array(this.total).fill(false),
+      type: "basic",
+      width: this.size.x,
+      tiles
     };
   }
 

@@ -28,7 +28,7 @@
           >link has been copied!</div>
           <div
             class="btn btn-secondary"
-            @click="$emit('close')"
+            @click="$emit('result')"
           >OK</div>
         </div>
       </div>

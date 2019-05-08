@@ -4,6 +4,10 @@
     "label": "1000 English Nouns"
   },
   {
+    "file": "en-bible-books",
+    "label": "Bible Books"
+  },
+  {
     "file": "en-spiritual",
     "label": "Some Spiritual Words"
   }

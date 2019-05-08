@@ -36,4 +36,7 @@ footer.navbar {
 .modal.show {
   display: block;
 }
+.modal.backdrop {
+  background: #00000088;
+}
 </style>

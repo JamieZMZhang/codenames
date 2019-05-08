@@ -1,12 +1,13 @@
-export const COLORS = {
-  mine: 0,
-  red: 1,
-  blue: 2,
-  nutral: 3,
-};
+function makeEnum(arr) {
+  const obj = {};
+  arr.forEach((label, value) => {
+    obj[label] = value;
+    obj[value] = label;
+  });
+  Object.freeze(obj);
+  return obj;
+}
 
-Object.keys(COLORS).forEach(k => {
-  COLORS[COLORS[k]] = k;
-});
+export const COLORS = makeEnum(['mine', 'red', 'blue', 'nutral']);
 
-Object.freeze(COLORS);
+export const TILE = makeEnum(['color', 'word', 'selected']);
