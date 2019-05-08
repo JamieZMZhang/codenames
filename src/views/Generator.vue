@@ -30,7 +30,7 @@ export default {
     gen.generateAsync().then(game => {
       const clientId = localStorage.clientId;
       database.ref(`clients/${clientId}`).set(game);
-      this.$router.push(`/game/${clientId}`);
+      this.$router.replace(`/game/${clientId}`);
     });
   }
 };

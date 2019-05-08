@@ -22,6 +22,7 @@
 <script>
 import { TILE, COLORS } from "@/define";
 import SelectConfirmModal from "./../SelectConfirmModal";
+import * as Hammer from "hammerjs";
 
 export default {
   name: "BasicBoard",
@@ -33,7 +34,10 @@ export default {
   },
   data() {
     return {
-      selectConfirm: null
+      selectConfirm: null,
+      mc: null,
+      zoom: 1,
+      oldZoom: 1
     };
   },
   computed: {
@@ -53,7 +57,8 @@ export default {
     },
     boardStyle() {
       return {
-        gridTemplateColumns: `repeat(${this.board.width}, 1fr)`
+        gridTemplateColumns: `repeat(${this.board.width}, 1fr)`,
+        zoom: this.zoom
       };
     }
   },
@@ -69,6 +74,19 @@ export default {
       }
       this.selectConfirm = null;
     }
+  },
+  mounted() {
+    this.mc = new Hammer.Manager(this.$el);
+    this.mc.add(new Hammer.Pinch());
+    this.mc.on("pinchstart", () => {
+      this.oldZoom = this.zoom;
+    });
+    this.mc.on("pinchmove", evt => {
+      this.zoom = this.oldZoom * evt.scale;
+    });
+  },
+  destroyed() {
+    this.mc.destroy();
   }
 };
 </script>
@@ -105,10 +123,9 @@ export default {
     display: inline-grid;
     align-content: center;
 
-    &.selected{
+    &.selected {
       cursor: default;
     }
-
   }
 
   &.spy .btn {

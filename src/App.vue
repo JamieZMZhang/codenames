@@ -1,23 +1,23 @@
 <template>
-  <div id="app">
+  <div id="app" class="d-flex flex-column">
+    <Toolbar />
     <router-view />
-    <footer class="navbar fixed-bottom navbar-dark bg-dark justify-content-end py-1">
-      <span class="navbar-text py-0">
-        Icons made by <a
-          href="https://www.freepik.com/"
-          title="Freepik"
-        >Freepik</a> from <a
-          href="https://www.flaticon.com/"
-          title="Flaticon"
-        >www.flaticon.com</a> is licensed by <a
-          href="http://creativecommons.org/licenses/by/3.0/"
-          title="Creative Commons BY 3.0"
-          target="_blank"
-        >CC 3.0 BY</a>
-      </span>
-    </footer>
+    <Footer />
   </div>
 </template>
+
+<script>
+import Toolbar from "@/views/Frame/Toolbar";
+import Footer from "@/views/Frame/Footer";
+
+export default {
+  components: {
+    Toolbar,
+    Footer
+  }
+};
+</script>
+
 
 <style>
 #app {

@@ -107,7 +107,7 @@ export default {
   methods: {
     generate() {
       const { width, height, dict } = this.form;
-      this.$router.push(`/generator/${width}x${height}/${dict}`);
+      this.$router.replace(`/generator/${width}x${height}/${dict}`);
     }
   },
   mounted() {

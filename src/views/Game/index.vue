@@ -1,17 +1,20 @@
 <template>
   <LoadingModal v-if="!board" />
-  <Modal
-    v-else-if="board === -1"
-    @result="$router.replace('/')"
-    :actions="[{ label: 'OK', class: 'btn-secondary'}]"
-  >
-    This link doesn't have any games going on. Please create a new game and share the new link with your friends or wait for this room's owner to create one.
+  <Modal v-else-if="board === -1">
+    <div class="modal-body">
+      This link doesn't have any games going on. Please create a new game and share the new link with your friends or wait for this room's owner to create one.
+    </div>
+    <div class="modal-footer">
+      <div
+        class="btn btn-secondary"
+        @click="$router.replace('/')"
+      >OK</div>
+    </div>
   </Modal>
   <div
     v-else
-    class="h-100"
+    class="flex-grow-1 p-3"
   >
-    <Toolbar />
     <BasicBoard
       v-if="board.type==='basic'"
       :board="board"
@@ -23,7 +26,6 @@
 <script>
 import LoadingModal from "./LoadingModal";
 import BasicBoard from "./Board/Basic";
-import Toolbar from "./Toolbar";
 import Modal from "@/components/Modal";
 import { TILE } from "@/define";
 
@@ -36,7 +38,6 @@ export default {
   components: {
     LoadingModal,
     BasicBoard,
-    Toolbar,
     Modal
   },
   data() {
@@ -79,8 +80,3 @@ export default {
   }
 };
 </script>
-
-<style lang="scss" scoped>
-</style>
-
-
