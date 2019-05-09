@@ -11,16 +11,11 @@
       >OK</div>
     </div>
   </Modal>
-  <div
-    v-else
-    class="flex-grow-1 p-3"
-  >
-    <BasicBoard
-      v-if="board.type==='basic'"
-      :board="board"
-      @tileClick="onTileClick"
-    />
-  </div>
+  <BasicBoard
+    v-else-if="board.type==='basic'"
+    :board="board"
+    @tileClick="onTileClick"
+  />
 </template>
 
 <script>

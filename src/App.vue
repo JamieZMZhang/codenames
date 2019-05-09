@@ -1,7 +1,12 @@
 <template>
-  <div id="app" class="d-flex flex-column">
+  <div
+    id="app"
+    class="d-flex flex-column"
+  >
     <Toolbar />
-    <router-view />
+    <main class="flex-grow-1 d-flex">
+      <router-view />
+    </main>
     <Footer />
   </div>
 </template>

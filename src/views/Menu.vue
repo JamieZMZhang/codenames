@@ -1,92 +1,100 @@
 <template>
   <form @submit.prevent="generate">
-    <div class="modal fade show">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content bg-light">
-          <div class="modal-header justify-content-center">
-            <h2 class="modal-title">Code Names</h2>
-          </div>
-          <div class="modal-body">
-            <div
-              v-if="dicts && dicts.length === 0"
-              class="text-center"
-            >
-              Error loading dictionary files. Please try again later.
-            </div>
-            <div v-else>
-              <div class="row">
-                <div class="col-12">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Width</span>
-                    </div>
-                    <select
-                      required
-                      v-model="form.width"
-                      class="form-control"
-                    >
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                    </select>
-                    <div class="input-group-prepend input-group-append">
-                      <span class="input-group-text">Height</span>
-                    </div>
-                    <select
-                      required
-                      v-model="form.height"
-                      class="form-control"
-                    >
-                      <option value="4">4</option>
-                      <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-12">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Dict</span>
-                    </div>
-                    <select
-                      required
-                      v-model="form.dict"
-                      class="form-control"
-                    >
-                      <option
-                        v-for="dict in dicts"
-                        :key="dict.file"
-                        :value="dict.file"
-                      >{{dict.label}}</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="submit"
-              class="btn btn-dark"
-            >Create Game</button>
+    <Modal>
+      <div class="modal-header justify-content-center">
+        <h2 class="modal-title">Code Names</h2>
+      </div>
+      <template v-if="dicts && !dicts.length">
+        <div class="modal-body">
+          <div class="text-center">
+            Error loading dictionary files. Please try again later.
           </div>
         </div>
-      </div>
-    </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-dark"
+            @click="onReload"
+          >Reload</button>
+        </div>
+      </template>
+      <template v-else>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Width</span>
+                </div>
+                <select
+                  required
+                  v-model="form.width"
+                  class="form-control"
+                >
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+                <div class="input-group-prepend input-group-append">
+                  <span class="input-group-text">Height</span>
+                </div>
+                <select
+                  required
+                  v-model="form.height"
+                  class="form-control"
+                >
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                  <option value="7">7</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">Dict</span>
+                </div>
+                <select
+                  required
+                  v-model="form.dict"
+                  class="form-control"
+                >
+                  <option
+                    v-for="dict in dicts"
+                    :key="dict.file"
+                    :value="dict.file"
+                  >{{dict.label}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="submit"
+            class="btn btn-dark"
+          >Create Game</button>
+        </div>
+      </template>
+    </Modal>
   </form>
 </template>
 
 <script>
 import Axios from "axios";
+import Modal from "@/components/Modal";
 
 let dictsStore = null;
 
 export default {
   name: "view-menu",
+  components: {
+    Modal
+  },
   data() {
     return {
       dicts: dictsStore,
@@ -108,6 +116,9 @@ export default {
     generate() {
       const { width, height, dict } = this.form;
       this.$router.replace(`/generator/${width}x${height}/${dict}`);
+    },
+    onReload() {
+      window.location.reload();
     }
   },
   mounted() {

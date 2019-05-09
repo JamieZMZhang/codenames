@@ -1,5 +1,5 @@
 <template>
-  <footer class="navbar sticky-bottom navbar-dark bg-dark justify-content-end py-1">
+  <footer class="navbar navbar-dark bg-dark justify-content-end py-1">
       <span class="navbar-text py-0">
         Icons made by <a
           href="https://www.freepik.com/"

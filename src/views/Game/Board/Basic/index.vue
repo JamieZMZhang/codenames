@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column justify-content-center align-items-center h-100">
+  <div class="d-flex flex-column justify-content-center align-items-center w-100">
     <SelectConfirmModal
       v-if="selectConfirm !== null"
       :word="tiles[selectConfirm][TILE.word]"
