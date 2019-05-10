@@ -5,16 +5,26 @@
       :word="tiles[selectConfirm][TILE.word]"
       @result="onConfirm"
     />
-    <div
-      :class="['board p-3 rounded', displayType]"
-      :style="boardStyle"
-    >
+    <div class="card">
+      <div class="card-header">
+        <div class="btn blue">
+          Blue <span class="badge badge-light">{{tileCount.blue}}</span>
+        </div>
+        <div class="btn red">
+          Red <span class="badge badge-light">{{tileCount.red}}</span>
+        </div>
+      </div>
       <div
-        v-for="(tile, index) in tiles"
-        :key="`tile-${index}`"
-        :class="['btn',{selected: tile[TILE.selected]} ,COLORS[tile[TILE.color]]]"
-        @click="onWordClick(index)"
-      >{{tile[TILE.word]}}</div>
+        :class="['card-body board p-3', displayType]"
+        :style="boardStyle"
+      >
+        <div
+          v-for="(tile, index) in tiles"
+          :key="`tile-${index}`"
+          :class="['btn',{selected: tile[TILE.selected]} ,COLORS[tile[TILE.color]]]"
+          @click="onWordClick(index)"
+        >{{tile[TILE.word]}}</div>
+      </div>
     </div>
   </div>
 </template>
@@ -55,10 +65,26 @@ export default {
     TILE() {
       return TILE;
     },
+    tileCount() {
+      const count = {};
+      count.red = this.tiles.filter(
+        t => t[TILE.color] === COLORS.red && !t[TILE.selected]
+      ).length;
+      count.blue = this.tiles.filter(
+        t => t[TILE.color] === COLORS.blue && !t[TILE.selected]
+      ).length;
+      return count;
+    },
     boardStyle() {
       return {
         gridTemplateColumns: `repeat(${this.board.width}, 1fr)`,
         zoom: this.zoom
+      };
+    },
+    boardInfoStyle() {
+      return {
+        gridColumnStart: 0,
+        gridColumnEnd: "end"
       };
     }
   },
@@ -96,6 +122,7 @@ export default {
   --bg: var(--red);
   --color: white;
 }
+
 .blue {
   --bg: var(--blue);
   --color: white;
@@ -109,12 +136,26 @@ export default {
   --color: black;
 }
 
+.card {
+  background: #ffffff40;
+  border-radius: 15px;
+
+  .card-header .btn {
+    background-color: var(--bg);
+    border-color: var(--bg);
+    color: white;
+
+    & + .btn {
+      margin-left: 12px;
+    }
+  }
+}
+
 .board {
   display: grid;
-  column-gap: 0.8em;
-  row-gap: 0.8em;
+  column-gap: 0.5em;
+  row-gap: 0.5em;
   grid-auto-rows: 1fr;
-  background: #ffffff40;
   max-width: var(--breakpoint-xl);
 
   .btn {
