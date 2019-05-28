@@ -62,16 +62,15 @@ James
 1 John
 2 John
 3 John
-Judges
 Revelation
 Watchtower
 Awake!
 Bible Teach Book
 Bible Story Book
 God's Love Book
-Good News Brochures
+Good News Brochure
 Daily Text
-Jehovah's Will Brochures
+Jehovah's Will Brochure
 (BE) Book
 Organization Book
 Insight
@@ -80,15 +79,10 @@ Great Teacher Book
 Young People Ask
 kingdom
 ruler
-earth
-sun
-moon
-star
 meeting
 prayer
 comment
 holy spirit
-future
 blessing
 Jehovah
 Jesus
@@ -98,7 +92,7 @@ Solomon
 Love
 joy
 peace
-parience
+patience
 kindness
 goodness
 faith
@@ -109,7 +103,7 @@ creation
 light
 witness
 heaven
-promise land
+promised land
 creature
 purpose
 garden of Eden
@@ -117,11 +111,11 @@ knowledge
 red sea
 satan
 organization
-SKE.
+SKE
 kingdom hall
-assembly hall
+assembly
 Memorial
-family study
+family worship
 public talk
 CBS
 preaching
@@ -135,7 +129,6 @@ Abraham
 Noah
 Nim'rod
 Ba'bel tower
-language
 Isaac
 Jacob
 Egypt
@@ -152,12 +145,10 @@ Saul
 Samuel
 Goliath
 Abigail
-king
 temple
 Jezebel
 Hezekiah
 Jerusalem
-lion
 Mary
 Baptism
 resurrection
@@ -166,3 +157,31 @@ Stephen
 Timothy
 everlasting life
 paradise
+Hannah
+Elijah
+Martha
+Melchizedek
+Faithful and Discreet Slave
+Bethel
+Amen
+Angels
+Apostle
+Bathsheba
+Canaan
+Elder
+Firstborn
+Esau
+Gehenna
+Gilead
+Hebrew
+Herod
+Idol
+Last Days
+Nazareth
+Nisan
+Prophecy
+1914
+Pharisee
+Saducees
+Return Visit
+Samaritans
