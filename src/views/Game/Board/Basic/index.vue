@@ -7,12 +7,9 @@
     />
     <div class="card">
       <div class="card-header">
-        <div class="btn blue">
-          Blue <span class="badge badge-light">{{tileCount.blue}}</span>
-        </div>
-        <div class="btn red">
-          Red <span class="badge badge-light">{{tileCount.red}}</span>
-        </div>
+        <div class="btn blue">{{tileCount.blue}}</div>
+        <div class="btn red">{{tileCount.red}}</div>
+        <div class="btn nutral">{{tileCount.nutral}}</div>
       </div>
       <div
         :class="['card-body board p-3', displayType]"
@@ -67,12 +64,11 @@ export default {
     },
     tileCount() {
       const count = {};
-      count.red = this.tiles.filter(
-        t => t[TILE.color] === COLORS.red && !t[TILE.selected]
-      ).length;
-      count.blue = this.tiles.filter(
-        t => t[TILE.color] === COLORS.blue && !t[TILE.selected]
-      ).length;
+      ["red", "blue", "nutral"].forEach(c => {
+        count[c] = this.tiles.filter(
+          t => t[TILE.color] === COLORS[c] && !t[TILE.selected]
+        ).length;
+      });
       return count;
     },
     boardStyle() {
@@ -143,7 +139,9 @@ export default {
   .card-header .btn {
     background-color: var(--bg);
     border-color: var(--bg);
-    color: white;
+    color: var(--color);
+	font-weight: bold;
+	cursor: default;
 
     & + .btn {
       margin-left: 12px;
