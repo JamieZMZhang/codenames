@@ -8,7 +8,7 @@ export default [
     component: Menu
   },
   {
-    path: "/generator/:size/:file",
+    path: "/generator/:type/:size/:file",
     component: Generator
   },
   {

@@ -11,8 +11,9 @@
       >OK</div>
     </div>
   </Modal>
-  <BasicBoard
-    v-else-if="board.type==='basic'"
+  <component
+    v-else
+    :is="board.type"
     :board="board"
     @tileClick="onTileClick"
   />
@@ -20,9 +21,9 @@
 
 <script>
 import LoadingModal from "./LoadingModal";
-import BasicBoard from "./Board/Basic";
+import StandardBoard from "./Board/Standard";
+import DualBoard from "./Board/Dual";
 import Modal from "@/components/Modal";
-import { TILE } from "@/define";
 
 const database = window.database;
 
@@ -32,8 +33,9 @@ export default {
   name: "view-game",
   components: {
     LoadingModal,
-    BasicBoard,
-    Modal
+    Modal,
+    standard: StandardBoard,
+    dual: DualBoard
   },
   data() {
     return {
@@ -63,8 +65,8 @@ export default {
         });
       }
     },
-    onTileClick(index) {
-      dbRef.child(`tiles/${index}/${TILE.selected}`).set(1);
+    onTileClick(path, value) {
+      dbRef.child(path).set(value);
     }
   },
   mounted() {

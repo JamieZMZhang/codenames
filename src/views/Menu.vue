@@ -56,6 +56,23 @@
             <div class="col-12">
               <div class="input-group">
                 <div class="input-group-prepend">
+                  <span class="input-group-text">Type</span>
+                </div>
+                <select
+                  required
+                  v-model="form.type"
+                  class="form-control"
+                >
+                  <option value="standard">Stanard</option>
+                  <option value="dual">Dual</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="input-group">
+                <div class="input-group-prepend">
                   <span class="input-group-text">Dict</span>
                 </div>
                 <select
@@ -101,7 +118,8 @@ export default {
       form: {
         width: 5,
         height: 5,
-        dict: ""
+        dict: "",
+        type: "standard"
       }
     };
   },
@@ -114,8 +132,8 @@ export default {
   },
   methods: {
     generate() {
-      const { width, height, dict } = this.form;
-      this.$router.replace(`/generator/${width}x${height}/${dict}`);
+      const { type, width, height, dict } = this.form;
+      this.$router.replace(`/generator/${type}/${width}x${height}/${dict}`);
     },
     onReload() {
       window.location.reload();

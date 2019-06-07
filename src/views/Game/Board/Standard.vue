@@ -2,7 +2,7 @@
   <div class="d-flex flex-column justify-content-center align-items-center w-100">
     <SelectConfirmModal
       v-if="selectConfirm !== null"
-      :word="tiles[selectConfirm][TILE.word]"
+      :word="tiles[selectConfirm][STANDARD_TILE.word]"
       @result="onConfirm"
     />
     <div class="card">
@@ -18,21 +18,22 @@
         <div
           v-for="(tile, index) in tiles"
           :key="`tile-${index}`"
-          :class="['btn',{selected: tile[TILE.selected]} ,COLORS[tile[TILE.color]]]"
+          :class="['btn',{selected: tile[STANDARD_TILE.selected]},STANDARD_COLORS[tile[STANDARD_TILE.color]]]"
+          :data-glow="index===board.lastSelected"
           @click="onWordClick(index)"
-        >{{tile[TILE.word]}}</div>
+        >{{tile[STANDARD_TILE.word]}}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { TILE, COLORS } from "@/define";
-import SelectConfirmModal from "./../SelectConfirmModal";
+import { STANDARD_TILE, STANDARD_COLORS } from "@/Games/Standard";
+import SelectConfirmModal from "../SelectConfirmModal";
 import * as Hammer from "hammerjs";
 
 export default {
-  name: "BasicBoard",
+  name: "StandardBoard",
   props: {
     board: Object
   },
@@ -56,17 +57,19 @@ export default {
     tiles() {
       return this.board.tiles;
     },
-    COLORS() {
-      return COLORS;
+    STANDARD_COLORS() {
+      return STANDARD_COLORS;
     },
-    TILE() {
-      return TILE;
+    STANDARD_TILE() {
+      return STANDARD_TILE;
     },
     tileCount() {
       const count = {};
       ["red", "blue", "nutral"].forEach(c => {
         count[c] = this.tiles.filter(
-          t => t[TILE.color] === COLORS[c] && !t[TILE.selected]
+          t =>
+            t[STANDARD_TILE.color] === STANDARD_COLORS[c] &&
+            !t[STANDARD_TILE.selected]
         ).length;
       });
       return count;
@@ -86,13 +89,18 @@ export default {
   },
   methods: {
     onWordClick(index) {
-      if (!this.board.tiles[index][TILE.selected]) {
+      if (!this.board.tiles[index][STANDARD_TILE.selected]) {
         this.selectConfirm = index;
       }
     },
     onConfirm(result) {
       if (result) {
-        this.$emit("tileClick", this.selectConfirm);
+        this.$emit(
+          "tileClick",
+          `tiles/${this.selectConfirm}/${STANDARD_TILE.selected}`,
+          1
+        );
+        this.$emit("tileClick", "lastSelected", this.selectConfirm);
       }
       this.selectConfirm = null;
     }
@@ -132,6 +140,10 @@ export default {
   --color: black;
 }
 
+[data-glow] {
+  box-shadow: 0 0 10px 5px #fff4;
+}
+
 .card {
   background: #ffffff40;
   border-radius: 15px;
@@ -140,8 +152,8 @@ export default {
     background-color: var(--bg);
     border-color: var(--bg);
     color: var(--color);
-	font-weight: bold;
-	cursor: default;
+    font-weight: bold;
+    cursor: default;
 
     & + .btn {
       margin-left: 12px;
