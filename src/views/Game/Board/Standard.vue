@@ -77,6 +77,7 @@ export default {
     boardStyle() {
       return {
         gridTemplateColumns: `repeat(${this.board.width}, 1fr)`,
+        fontSize: `${this.zoom}rem`,
         zoom: this.zoom
       };
     },
@@ -163,8 +164,6 @@ export default {
 
 .board {
   display: grid;
-  column-gap: 0.5em;
-  row-gap: 0.5em;
   grid-auto-rows: 1fr;
   max-width: var(--breakpoint-xl);
 
@@ -173,7 +172,8 @@ export default {
     text-transform: capitalize;
     display: inline-grid;
     align-content: center;
-
+    margin: 5px;
+    font-size: inherit;
     &.selected {
       cursor: default;
     }

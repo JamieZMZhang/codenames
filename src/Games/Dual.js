@@ -36,31 +36,37 @@ function genAmounts(total) {
 }
 
 function genColors(total) {
+  const GREEN = 'green';
+  const NUTRAL = 'nutral';
+  const MINE = 'mine';
+
   const amounts = genAmounts(total);
-  const colors = [new Array(total), new Array(total)];
-  let commonGreen = amounts.mine;
-  amounts.green -= commonGreen;
-  while (commonGreen > 0) {
-    const target = getRnd(total - 1);
-    if (colors[0][target] === undefined) {
-      colors[0][target] = 'green';
-      colors[1][target] = 'green';
-      --commonGreen;
+  const colors = [new Array(total).fill(NUTRAL), new Array(total).fill(NUTRAL)];
+  let totalGreen = amounts.green * 2 - amounts.mine;
+  const _greens = new Set();
+  while (_greens.size < totalGreen) {
+    _greens.add(getRnd(total - 1));
+  }
+  const greens = [..._greens];
+
+  for (let i = 0; i < amounts.mine; ++i) {
+    const index = greens[i];
+    colors[0][index] = colors[1][index] = GREEN;
+  }
+  for (let j = 0; j < 2; ++j) {
+    for (let i = 0; i < amounts.green; ++i) {
+      const index = greens[amounts.mine + amounts.green * j + i];
+      colors[j][index] = GREEN;
     }
   }
+
   colors.forEach(board => {
-    const boardAmount = { ...amounts };
-    for (let i = 0; i < total; ++i) {
-      if (board[i] === undefined) {
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
-          const color = Object.keys(boardAmount)[getRnd(3)];
-          if (boardAmount[color] > 0) {
-            --boardAmount[color];
-            board[i] = color;
-            break;
-          }
-        }
+    let mines = 0;
+    while (mines < amounts.mine) {
+      const target = getRnd(total - 1);
+      if (board[target] === NUTRAL) {
+        board[target] = MINE;
+        ++mines;
       }
     }
   });

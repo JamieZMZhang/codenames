@@ -17,9 +17,8 @@
         >Team {{playerTeam}}</div>
         <button
           class="btn btn-primary"
-          :disabled="isGuessingTeam"
           @click.prevent="onSwitch"
-        >My Turn</button>
+        >Switch Side</button>
       </div>
       <div
         class="card-body board p-3"
@@ -87,6 +86,7 @@ export default {
     boardStyle() {
       return {
         gridTemplateColumns: `repeat(${this.board.width}, 1fr)`,
+        fontSize: `${this.zoom}rem`,
         zoom: this.zoom
       };
     }
@@ -112,13 +112,11 @@ export default {
       this.selectConfirm = null;
     },
     onSwitch() {
-      if (!this.isGuessingTeam) {
-        this.$emit(
-          "tileClick",
-          "guessingTeam",
-          this.guessingTeam === "A" ? "B" : "A"
-        );
-      }
+      this.$emit(
+        "tileClick",
+        "guessingTeam",
+        this.guessingTeam === "A" ? "B" : "A"
+      );
     }
   },
   mounted() {
@@ -153,8 +151,6 @@ export default {
 
 .board {
   display: grid;
-  column-gap: 0.5em;
-  row-gap: 0.5em;
   grid-auto-rows: 1fr;
   max-width: var(--breakpoint-xl);
 
@@ -163,6 +159,8 @@ export default {
     text-transform: capitalize;
     display: inline-grid;
     align-content: center;
+    margin: 5px;
+    font-size: inherit;
     &[data-selected="1"] {
       cursor: default;
     }
