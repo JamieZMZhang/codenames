@@ -3,9 +3,10 @@
     id="app"
     class="d-flex flex-column"
   >
-    <Toolbar />
+    <Toolbar hidden="!userStore.user" />
     <main class="flex-grow-1 d-flex">
-      <router-view />
+      <router-view v-if="!!userStore.user" />
+      <Login v-else />
     </main>
     <Footer />
   </div>
@@ -14,12 +15,20 @@
 <script>
 import Toolbar from "@/views/Frame/Toolbar";
 import Footer from "@/views/Frame/Footer";
+import Login from "@/views/Login";
+import { userStore } from "@/stores/userStore";
 
 export default {
   components: {
     Toolbar,
-    Footer
+    Footer,
+    Login
   },
+  computed: {
+    userStore() {
+      return userStore;
+    }
+  }
 };
 </script>
 
