@@ -21,7 +21,7 @@ export default async function generateDualAsync(width, height, dictFile) {
     width,
     type: "dual",
     tiles,
-    guessingTeam: "A"
+    guessingTeam: "A",
   };
 }
 
@@ -31,7 +31,6 @@ function genAmounts(total) {
 
   amounts.mine = unit;
   amounts.green = unit * unit;
-  amounts.nutral = total - unit * (unit + 1);
   return amounts;
 }
 
@@ -49,13 +48,9 @@ function genColors(total) {
   }
   const greens = [..._greens];
 
-  for (let i = 0; i < amounts.mine; ++i) {
-    const index = greens[i];
-    colors[0][index] = colors[1][index] = GREEN;
-  }
   for (let j = 0; j < 2; ++j) {
     for (let i = 0; i < amounts.green; ++i) {
-      const index = greens[amounts.mine + amounts.green * j + i];
+      const index = greens[(amounts.green - amounts.mine) * j + i];
       colors[j][index] = GREEN;
     }
   }

@@ -18,7 +18,9 @@
         <button
           class="btn btn-primary"
           @click.prevent="onSwitch"
-        >Switch Side</button>
+        >Switch Side
+          <span class="badge badge-light">{{board.turns || 0}}</span>
+        </button>
       </div>
       <div
         class="card-body board p-3"
@@ -69,12 +71,15 @@ export default {
     },
     tileCount() {
       return {
-        green: this.tiles.filter(
-          t =>
-            ((t.colorA === "green" && !t.selectedA) ||
-              (t.colorB === "green" && !t.selectedB)) &&
-            t.colorA !== t.colorB
-        ).length
+        green: this.tiles.filter(t => {
+          if (t.colorA === t.colorB && t.colorA === "green") {
+            return !t.selectedA && !t.selectedB;
+          }
+          return (
+            (t.colorA === "green" && !t.selectedA) ||
+            (t.colorB === "green" && !t.selectedB)
+          );
+        }).length
       };
     },
     guessingTeam() {
@@ -116,6 +121,11 @@ export default {
         "tileClick",
         "guessingTeam",
         this.guessingTeam === "A" ? "B" : "A"
+      );
+      this.$emit(
+        "tileClick",
+        "turns",
+        (this.board.turns = (this.board.turns || 0) + 1)
       );
     }
   },
