@@ -2,7 +2,6 @@
   <div
     id="app"
     class="d-flex flex-column"
-    :data-rotate="rotate"
   >
     <Toolbar />
     <main class="flex-grow-1 d-flex">
@@ -15,26 +14,12 @@
 <script>
 import Toolbar from "@/views/Frame/Toolbar";
 import Footer from "@/views/Frame/Footer";
-import { setTimeout } from "timers";
 
 export default {
   components: {
     Toolbar,
     Footer
   },
-  data() {
-    return {
-      rotate: false
-    };
-  },
-  mounted() {
-    window.addEventListener("orientationchange", () => {
-      setTimeout(
-        () => (this.rotate = window.innerHeight > window.innerWidth),
-        100
-      );
-    });
-  }
 };
 </script>
 
@@ -44,7 +29,7 @@ export default {
   width: 100vw;
   height: 100vh;
 }
-#app[data-rotate] {
+#app[data-rotate="true"] {
   transform: rotate(90deg) translate(0px, -100%);
   transform-origin: top left;
   height: 100vw;

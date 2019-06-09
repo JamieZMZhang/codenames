@@ -67,13 +67,25 @@ export default {
     },
     onTileClick(path, value) {
       dbRef.child(path).set(value);
+    },
+    checkRotate() {
+      document.getElementById("app").dataset.rotate =
+        window.innerHeight > window.innerWidth;
     }
   },
   mounted() {
     this.subscribeDb(this.room);
+    window.addEventListener("orientationchange", () => {
+      setTimeout(this.checkRotate, 100);
+    });
+    window.addEventListener("resize", () => {
+      setTimeout(this.checkRotate, 100);
+    });
+    this.checkRotate();
   },
   destroyed() {
     this.subscribeDb(null);
+    document.getElementById("app").dataset.rotate = false;
   }
 };
 </script>
