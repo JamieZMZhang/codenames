@@ -4,9 +4,9 @@
       <img
         src="icons/icon.svg"
         alt="website logo"
-        class="app-logo align-top bg-light d-inline-block p-1 rounded"
-      /> Code Names</span>
-    <div>
+        class="app-logo align-top bg-light d-inline-block p-1 rounded mr-2"
+      />Code Names</span>
+    <div class="d-flex">
       <div
         :hidden="!$route.path.startsWith('/game/')"
         to="/"
@@ -25,6 +25,15 @@
         title="Share Game"
         @click="onShare"
       >share</div>
+      <Dropdown :alignRight="true">
+        {{userStore.user.displayName}}
+        <template v-slot:items>
+          <a
+            class="dropdown-item cr-pointer"
+            @click="onSignOut"
+          >Sign Out</a>
+        </template>
+      </Dropdown>
     </div>
     <NewGameModal
       v-if="showNewGameModal"
@@ -45,12 +54,15 @@
 import ShareModal from "./ShareModal";
 import LoadGameModal from "./LoadGameModal";
 import NewGameModal from "./NewGameModal";
+import Dropdown from "@/components/Dropdown";
+import { userStore } from "@/stores/userStore";
 
 export default {
   name: "GameToolbar",
   components: {
     NewGameModal,
     LoadGameModal,
+    Dropdown,
     ShareModal
   },
   data() {
@@ -59,6 +71,11 @@ export default {
       showLoadGameModal: false,
       showNewGameModal: false
     };
+  },
+  computed: {
+    userStore() {
+      return userStore;
+    }
   },
   methods: {
     onShare() {
@@ -71,13 +88,18 @@ export default {
       } else {
         this.showShareModal = true;
       }
+    },
+    onSignOut() {
+      window.firebase.auth().signOut();
+      delete localStorage.user;
+      this.userStore.user = null;
     }
   }
 };
 </script>
 
 <style scoped>
-nav.navbar{
+nav.navbar {
   z-index: 9999;
 }
 .app-logo {

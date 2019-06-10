@@ -1,3 +1,4 @@
+
 export default {
   name: 'outsideClick',
   bind: function (el, binding) {
@@ -11,12 +12,14 @@ export default {
         }
       }
     };
-    el.dataset.listener = listener;
+
+    el.outsideClickListener = listener;
     document.addEventListener('click', listener);
     el.addEventListener('blur', listener);
   },
   unbind(el) {
-    const listener = el.dataset.listener;
+    const listener = el.outsideClickListener;
     document.removeEventListener('click', listener);
+    el.removeEventListener('blur', listener);
   }
 };

@@ -12,7 +12,7 @@ export default [
     component: Generator
   },
   {
-    path: "/game/:room",
+    path: "/game/:room?",
     component: Game
   },
   {

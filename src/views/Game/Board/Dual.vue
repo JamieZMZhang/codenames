@@ -44,6 +44,7 @@
 
 <script>
 import SelectConfirmModal from "../SelectConfirmModal";
+import { userStore } from "@/stores/userStore";
 import * as Hammer from "hammerjs";
 
 export default {
@@ -64,7 +65,7 @@ export default {
   },
   computed: {
     playerTeam() {
-      return this.$route.params.room === localStorage.clientId ? "A" : "B";
+      return this.$route.params.room === userStore.user.email ? "A" : "B";
     },
     tiles() {
       return this.board.tiles;

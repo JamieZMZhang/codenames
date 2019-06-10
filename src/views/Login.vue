@@ -24,6 +24,9 @@
 
 <script>
 import Modal from "@/components/Modal";
+import { userStore } from "@/stores/userStore";
+
+const auth = window.firebase.auth;
 
 export default {
   name: "Login",
@@ -37,14 +40,22 @@ export default {
   },
   methods: {
     signInGoogle() {
-      const gOauth = new window.firebase.auth.GoogleAuthProvider();
-      window.firebase
-        .auth()
-        .signInWithPopup(gOauth)
+      const provider = new auth.GoogleAuthProvider();
+      auth().signInWithRedirect(provider);
+    }
+  },
+  mounted() {
+    if (localStorage.user) {
+      userStore.user = JSON.parse(localStorage.user);
+    } else {
+      auth()
+        .getRedirectResult()
         .then(result => {
-          alert(JSON.stringify(result));
-          // eslint-disable-next-line no-console
-          console.log("loggedIn", result);
+          if (result.credential) {
+            const { email, displayName } = result.user;
+            userStore.user = { email, displayName };
+            localStorage.user = JSON.stringify(userStore.user);
+          }
         })
         .catch(error => (this.errorMessage = error.message));
     }

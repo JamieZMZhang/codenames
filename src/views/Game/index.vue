@@ -24,7 +24,7 @@ import LoadingModal from "./LoadingModal";
 import StandardBoard from "./Board/Standard";
 import DualBoard from "./Board/Dual";
 import Modal from "@/components/Modal";
-
+import { userStore } from "@/stores/userStore";
 const database = window.database;
 
 let dbRef = null;
@@ -58,7 +58,7 @@ export default {
         dbRef.off("value");
       }
       if (room) {
-        dbRef = database.ref(`clients/${room}`);
+        dbRef = database.ref(`clients/${room.replace(/\./g, "_")}`);
         dbRef.on("value", snapshot => {
           const game = snapshot.val();
           this.board = game || -1;
@@ -74,7 +74,6 @@ export default {
     }
   },
   mounted() {
-    this.subscribeDb(this.room);
     window.addEventListener("orientationchange", () => {
       setTimeout(this.checkRotate, 100);
     });
@@ -82,6 +81,21 @@ export default {
       setTimeout(this.checkRotate, 100);
     });
     this.checkRotate();
+    if (this.room) {
+      this.subscribeDb(this.room);
+    } else {
+      if (
+        database
+          .ref(`clients/${this.room.replace(/\./g, "_")}`)
+          .once("value", data => {
+            if (data) {
+              this.$router.push(`/game/${userStore.user.email}`);
+            } else {
+              this.$router.push("/");
+            }
+          })
+      );
+    }
   },
   destroyed() {
     this.subscribeDb(null);

@@ -3,7 +3,7 @@
     id="app"
     class="d-flex flex-column"
   >
-    <Toolbar hidden="!userStore.user" />
+    <Toolbar v-if="userStore.user" />
     <main class="flex-grow-1 d-flex">
       <router-view v-if="!!userStore.user" />
       <Login v-else />
@@ -59,5 +59,8 @@ footer.navbar {
 }
 .modal.backdrop {
   background: #00000088;
+}
+.cr-pointer{
+  cursor: pointer;
 }
 </style>

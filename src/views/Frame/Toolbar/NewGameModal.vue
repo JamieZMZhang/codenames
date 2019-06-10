@@ -20,6 +20,7 @@
 
 <script>
 import Modal from "@/components/Modal";
+import { userStore } from "@/stores/userStore";
 
 export default {
   name: "NewGameModal",
@@ -34,23 +35,15 @@ export default {
   },
   computed: {
     isOwner() {
-      return this.$route.params.room === localStorage.clientId;
+      return this.$route.params.room === userStore.user.email;
     }
   },
   methods: {
-    onCopy() {
-      document.getElementById("url").select();
-      document.execCommand("copy");
-      this.hintCopied = true;
-      if (this.hintTimer) {
-        clearTimeout(this.hintTimer);
-      }
-      this.hintTimer = setTimeout(() => (this.hintCopied = false), 2000);
-    },
     onConfirm() {
-      const { room } = this.$route.params;
       if (this.isOwner) {
-        window.database.ref(`clients/${room}`).set(null);
+        window.database
+          .ref(`clients/${userStore.user.email.replace(/\./g, "_")}`)
+          .set(null);
       }
       this.$router.replace("/");
       this.$emit("result", true);
