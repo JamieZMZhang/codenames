@@ -24,6 +24,7 @@
 <script>
 import GenerateStandardAsync from "@/Games/Standard";
 import GenerateDualAsync from "@/Games/Dual";
+import { userStore } from "@/stores/userStore";
 import Modal from "@/components/Modal";
 
 const database = window.database;
@@ -49,9 +50,11 @@ export default {
 
     generators[type](xy[0], xy[1], file)
       .then(game => {
-        const clientId = localStorage.clientId;
-        database.ref(`clients/${clientId}`).set(game);
-        this.$router.replace(`/game/${clientId}`);
+        const { email } = userStore.user;
+        database
+          .ref(`clients/${email.replace(/\./g, "_")}`)
+          .set(game);
+        this.$router.replace(`/game/${email}`);
       })
       .catch(ex => {
         this.error = true;

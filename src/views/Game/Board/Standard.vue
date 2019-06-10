@@ -30,6 +30,7 @@
 <script>
 import { STANDARD_TILE, STANDARD_COLORS } from "@/Games/Standard";
 import SelectConfirmModal from "../SelectConfirmModal";
+import { userStore } from "@/stores/userStore";
 import * as Hammer from "hammerjs";
 
 export default {
@@ -50,9 +51,8 @@ export default {
   },
   computed: {
     displayType() {
-      return this.$route.params.room === localStorage.clientId
-        ? "master"
-        : "spy";
+      const room = this.$route.params.room;
+      return !room || room === userStore.user.email ? "master" : "spy";
     },
     tiles() {
       return this.board.tiles;
@@ -81,12 +81,6 @@ export default {
         zoom: this.zoom
       };
     },
-    boardInfoStyle() {
-      return {
-        gridColumnStart: 0,
-        gridColumnEnd: "end"
-      };
-    }
   },
   methods: {
     onWordClick(index) {
